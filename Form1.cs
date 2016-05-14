@@ -51,8 +51,12 @@ namespace xml_case_convert
           if (btn == "C > c")
           {
             nd.InnerText = nd.InnerText.ToLower();
-            // check if there exists N'... unicode string
-            nd.InnerText = Regex.Replace(nd.InnerText, @"n'", @"N'");
+            // check if there exists N'... unicode string + $VARIABLES$
+            nd.InnerText = nd.InnerText.Replace("n'", "N'");
+            foreach (Match m in Regex.Matches(nd.InnerText,@"[$%][a-z]*[$%]"))
+            {
+              nd.InnerText = nd.InnerText.Replace(m.Value, m.Value.Replace("$","%").ToUpper());
+            }
           }
           else if (btn == "c > C")
             nd.InnerText = nd.InnerText.ToUpper();
